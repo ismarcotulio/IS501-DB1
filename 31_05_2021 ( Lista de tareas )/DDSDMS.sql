@@ -123,36 +123,3 @@ Para listar datos en las tablas: SELECT
 ejemplo
 SELECT * FROM TABLE;
 */
-
---Evitar utilizar * en toda consulta de la clase
---Investigar que es paginacion de BD
-
---Para listar el campo nombre de tarea
-
-SELECT
-    text_name AS "Nombre de la tarea"
-FROM
-    Task
-WHERE
-    id BETWEEN 1 AND 4
-;
-
-SELECT
-    text_name AS "Nombre de la Tarea"
-FROM
-    Task
-WHERE
-    id <= 4 OR id = 6
-;
-/*
-Listar las tareas que pertenecen a un empleado ( JOIN )
-mostrando el id del empleado
-*/
-
-SELECT
-    Task.text_name AS "Nombre de la Tarea"
-FROM
-    Task
-JOIN
-    List ON Task.id_list = List.id
-;
