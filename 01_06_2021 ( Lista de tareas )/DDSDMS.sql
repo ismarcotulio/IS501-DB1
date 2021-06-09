@@ -157,3 +157,133 @@ FROM
 JOIN
     List ON Task.id_list = List.id
 ;
+
+/*
+Listar las tareas que pertenecen a un empleado ( JOIN ),
+mostrando el nombre del empleado
+*/
+
+SELECT
+    Task.id AS "Id de la tarea",
+    Task.text_name AS "Nombre de la tarea"
+    Employee.text_name AS "Nombre del empleado"
+FROM
+    Task
+JOIN
+    List ON Task.id_list = List.id
+JOIN Employee ON List.id_employee = Employee.id
+;
+
+/*
+Contar las tareas por empleados mostrando el nombre empleado
+COUNT(), AVG(), MIN() ...
+*/
+
+SELECT
+    Employee.text_name AS "Nombre del empleado",
+    COUNT(*) AS "Cantidad de tareas por empleado"
+FROM   
+    Task
+JOIN
+    List ON Task.id_list = List.id
+JOIN
+    Employee ON List.id_employee = Employee.id
+GROUP BY
+    Employee.id
+;
+
+/*
+Contar las tareas por empleado, mostrando el nombre empleado e
+incluir el estado de la tarea
+*/
+
+SELECT
+    Employee.text_name AS "Nombre del empleado",
+    COUNT(*) AS "Cantidad de tareas por estado"
+    IF(
+        Task.bit_state = 1, "completado", "Pendiente"
+    ) AS "Estado de la tarea"
+FROM
+    Task
+JOIN
+    List ON Task.id_list = List.id
+JOIN
+    Employee ON List.id_employee = Employee.id
+GROUP BY
+    Employee.id,
+    Task.bit_state
+;
+
+/*
+Contar las tareas por empleado, mostrando el nombre
+junto con el total de tareas de ese empleado
+*/
+
+SELECT
+    Employee.text_name AS "Nombre del empleado",
+    COUNT(*) AS "Cantidad de tareas por empleado filtrado por estado"
+    IF(
+        Task.bit_state = 1, "Completado", "Pendiente"
+    ) AS "Estado de la tarea"
+    (
+        SELECT
+            COUNT(*)
+        FROM
+            Task
+        JOIN
+            List ON Task.id_list = List.id
+        JOIN
+            Employee AS InnerEmployee ON List.id_employee = InnerEmployee.id
+        WHERE
+            InnerEmployee.id = Employee.id
+    ) AS "Total de tareas del empleado"
+FROM
+    Task
+JOIN
+    List ON Task.id_list = list.id
+JOIN
+    Employee ON List.id_employee = Employee.id
+GROUP BY
+    Employee.id
+    Task.bit_state
+;
+
+/*
+Se muestra el porcentaje de tareas completadas|pendientes
+de cada empleado
+*/
+
+SELECT
+    Employee.text_name AS "Nombre del empleado",
+    IF(
+        Task.bit_state = 1, "completado", "Pendiente"
+    )AS "Estado de la tarea"
+        CONCAT(
+            CAST(
+                COUNT(*)/(
+                    SELECT
+                        COUNT(*)
+                    FROM
+                        Task
+                    JOIN
+                        List ON Task.id_list = List.id
+                    JOIN
+                        Employee AS InnerEmployee ON List.id_employee = InnerEmployee.id
+                    WHERE
+                        InnerEmployee.id = Employee.id
+                )*100 AS DECIMAL(8,2),
+            ),
+            "%"
+        ) AS "Porcentaje de tareas"
+    FROM
+        Task
+    JOIN
+        List ON Task.id_list = List.id
+    JOIN
+        Employee ON List.id_employee = Employee.id
+    GROUP BY
+        Employee.id,
+        Task.bit_state
+;
+            
+        
