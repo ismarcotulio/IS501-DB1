@@ -36,7 +36,7 @@ CREATE TABLE IF NOT EXISTS Employee(
     id_department INT NOT NULL COMMENT "Representa el identificador
     primario del registro de la tabla departamento",
     text_name TEXT NOT NULL,
-    int_account INT
+    int_account INT NOT NULL
 );
 
 CREATE TABLE List(
