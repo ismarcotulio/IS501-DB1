@@ -286,6 +286,90 @@ SELECT
         Task.bit_state
 ;
 
+/*
+Se muestra el porcentaje de tareas completadas|pendientes
+de cada departamento
+*/
+
+SELECT
+    Department.text_name AS "Nombre del departamento",
+    IF(
+        Task.bit_state = 1, "completado", "Pendiente"
+    )AS "Estado de la tarea"
+        CONCAT(
+            CAST(
+                COUNT(*)/(
+                    SELECT
+                        COUNT(*)
+                    FROM
+                        Task
+                    JOIN
+                        List ON Task.id_list = List.id
+                    JOIN
+                        Employee ON List.id_employee = Employee.id
+                    WHERE
+                        Employee.id_department = Department.id
+                )*100 AS DECIMAL(8,2),
+            ),
+            "%"
+        ) AS "Porcentaje de tareas"
+    FROM
+        Task
+    JOIN
+        List ON Task.id_list = List.id
+    JOIN
+        Employee ON List.id_employee = Employee.id
+    JOIN
+        Department ON Employee.id_department = Department.id
+    GROUP BY
+        Department.id,
+        Task.bit_state
+;
+
+/*
+Se muestra el porcentaje de tareas completadas|pendientes
+de cada gerencia
+*/
+
+SELECT
+    Management.text_name AS "Nombre de la gerencia",
+    IF(
+        Task.bit_state = 1, "completado", "Pendiente"
+    )AS "Estado de la tarea"
+        CONCAT(
+            CAST(
+                COUNT(*)/(
+                    SELECT
+                        COUNT(*)
+                    FROM
+                        Task
+                    JOIN
+                        List ON Task.id_list = List.id
+                    JOIN
+                        Employee ON List.id_employee = Employee.id
+                    JOIN
+                        Department ON Employee.id_department = Department.id
+                    WHERE
+                        Department.id_management = Management.id
+                )*100 AS DECIMAL(8,2),
+            ),
+            "%"
+        ) AS "Porcentaje de tareas"
+    FROM
+        Task
+    JOIN
+        List ON Task.id_list = List.id
+    JOIN
+        Employee ON List.id_employee = Employee.id
+    JOIN
+        Department ON Employee.id_department = Department.id
+    JOIN
+        Management ON Department.id_management = Management.id
+    GROUP BY
+        Management.id,
+        Task.bit_state
+;
+
 
             
         
