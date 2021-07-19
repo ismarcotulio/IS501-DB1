@@ -1,0 +1,133 @@
+<!--
+@author mruizq@unah.hn
+@version 0.1.0
+@date 2021/07/18
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IndexedDB</title>
+    <link rel="stylesheet" href="CSS/style.css">
+</head>
+<body>
+    <!--
+        DESCRIPCION:
+        Desarrolle una página web con 5 controles que administran dos listas de elementos, cada una
+        como una tabla distinta dentro de una base de datos IndexedDB, donde es posible agregar elementos en una
+        lista, mover elementos (delete, insert) o eliminarlos. 
+    -->
+    <!----------------------------------BACKGROUND---------------------------------------->
+    <div id="background-div"><img src="img/background14.jpg" alt=""></div>
+    <div id=blur-div></div>
+    <div id=unah-div><img src="img/UNAH.png" alt="logoUNAH"></div>
+    <div id=box-shadow-div></div>
+    <div id="border-div"></div>
+    <!------------------------------------------------------------------------------------->
+
+    <div id="controls-container">
+        <div id="tables-container">
+            <!--
+            EL CONTROL A Representa la tabla 1 de base de datos, es decir, la tabla de 
+            base de datos que alimenta la lista de selección múltiple de arriba. 
+            -->
+            <div class="table-dark-blur-effect"></div>
+            <div class="table-container" id="controlA-container">
+                
+            </div>
+            
+            <!--
+                EL CONTROL B Representa la tabla 2 de base de datos, es decir, la tabla 
+                de base de datos que alimenta la  lista de selección múltiple de abajo. 
+            -->
+            <div class="table-dark-blur-effect"></div>
+            <div class="table-container" id="controlB-container"></div>
+            
+        </div>
+        <div id="move-btn-container">
+            <!--
+            EN EL CONTROL C:
+                El Botón ⇩: Cuando uno o varios elementos del control A están seleccionados, se mueven los registros desde
+                una tabla de base de datos hacia la otra. La acción final debe verse en el control A y B (se elimina de una 
+                para moverse hacia la otra).
+
+                El Botón ⇧: Cuando uno o varios elementos del control B están seleccionados, se mueven los registros desde una
+                tabla de base de datos hacia la otra. La acción final debe verse en el control B y A (se elimina de una para 
+                moverse hacia la otra).
+            -->
+            <div id="controlC-container">
+                <div class="controlC-btn-dark-blur-effect"></div>
+                <div class="controlC-btn-container"><button class="controlC-btn" id="move-down-btn" onclick="moveProfessor()"><b>⇩</b></button></div>
+                <div class="controlC-btn-dark-blur-effect"></div>
+                <div class="controlC-btn-container"><button class="controlC-btn" id="move-top-btn" onclick="moveStudent()"><b>⇧</b></button></div>
+                <div class="controlC-btn-dark-blur-effect"></div>
+                <div class="controlC-btn-container"><button class="controlC-btn" id="delete-btn" onclick="deleteData()"><b>Eliminar</b></button></div>
+            </div>
+        </div>
+        <div id="forms-container">
+            <!--
+            EN EL CONTROL D:
+                Campos de texto: contiene los datos de un profesor (nombre, número de empleado).
+                Botón limpiar: elimina los datos escritos en las cajas de texto del control D.
+                Botón agregar: toma los datos de los campos de texto del control D y los agrega como un único registro de base de datos. 
+            -->
+            <div class="form-control-dark-blur-effect"></div>
+            <div class="form-control-container" id="controlD-container">
+                <div class="form-title-container"><h3>Agregar un profesor:</h3></div>
+                <div class="form-inputs-container">
+                    <div class="form-input-container">
+                        <div class="input-title-container"><p>Nombre</p></div>
+                        <div class="input-container">
+                            <input class="input" type="text" id="input-professor-name">
+                        </div>
+                    </div>
+                    <div class="form-input-container">
+                        <div class="input-title-container"><p>No. Empleado</p></div>
+                        <div class="input-container">
+                            <input class="input" type="text" id="input-professor-account">
+                        </div>
+                    </div>
+                </div>
+                <div class="form-btn-container">
+                    <div class="btn-container"><button class="form-btn" onclick="cleanFormProfessor()">Limpiar</button></div>
+                    <div class="btn-container"><button class="form-btn" onclick="addProfessorData()">Agregar</button></div>
+                </div>
+            </div>
+            <!--
+                EN EL CONTROL E:
+                    Campos de texto: contiene los datos de un estudiante (nombre, número de cuenta).
+                    Botón limpiar: elimina los datos escritos en las cajas de texto del control E.
+                    Botón agregar: toma los datos de los campos de texto del control E y los agrega como un único registro de base de datos.
+            -->
+            <div class="form-control-dark-blur-effect"></div>
+            <div class="form-control-container" id="controlE-container">
+                <div class="form-title-container"><h3>Agregar un estudiante:</h3></div>
+                <div class="form-inputs-container">
+                    <div class="form-input-container">
+                        <div class="input-title-container"><p>Nombre</p></div>
+                        <div class="input-container">
+                            <input class="input" id="input-student-name" type="text">
+                        </div>
+                    </div>
+                    <div class="form-input-container">
+                        <div class="input-title-container">No. Cuenta</div>
+                        <div class="input-container">
+                            <input class="input" type="text" id="input-student-account">
+                        </div>
+                    </div>
+                </div>
+                <div class="form-btn-container">
+                    <div class="btn-container"><button class="form-btn" onclick="cleanFormStudent()">Limpiar</button></div>
+                    <div class="btn-container"><button class="form-btn" onclick="addStudentData()">Agregar</button></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+<script src="JS/idb.js"></script>
+<script src="JS/table.js"></script>
+<script src="JS/main.js"></script>
+</html>
